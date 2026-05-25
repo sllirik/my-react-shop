@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "test@test.com",
+      "password": "123456",
+      "username": "Тестовый пользователь"
+    },
+    {
+      "id": "2",
+      "email": "ivan@example.com",
+      "password": "qwerty",
+      "username": "Иван"
+    },
+    {
+      "username": "Alex",
+      "email": "alex@users.com",
+      "password": "alex",
+      "id": "eZU--N0RwTY"
+    },
+    {
+      "username": "Kex",
+      "email": "kex@users.com",
+      "password": "kex123",
+      "id": "WP988PSxDzE"
+    },
+    {
+      "username": "NikoLazy",
+      "email": "nik.olay@users.com",
+      "password": "32123",
+      "id": "2AMxv1nvamA"
+    },
+    {
+      "username": "Milan4ika",
+      "email": "milka@users.com",
+      "password": "424242",
+      "id": "LWpI8Z_fGW8"
+    },
+    {
+      "username": "S.Llirik",
+      "email": "just_world@bk.ru",
+      "password": "gfgjxrf",
+      "id": "dU7U16NMUIU"
+    },
+    {
+      "username": "Milana228",
+      "email": "228@user.com",
+      "password": "228",
+      "id": "80VUPD5nH9Q"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "title": "Мой первый пост",
+      "content": "Привет, мир!"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

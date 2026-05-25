@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 
 export const Authorization = () => {
+
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -22,6 +23,9 @@ export const Authorization = () => {
 	// Path - Сброс пароля
 	const isResetPassword = location.pathname.includes('/password/new');
 
+
+
+
 	// Вход
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -29,7 +33,36 @@ export const Authorization = () => {
 		setError('');
 
 		try {
-			console.log('Логин:', email, '\nПароль: ', password)
+			// Отправляем запрос на сервер
+			const response = await fetch('http://localhost:5000/users');
+			
+			if(!response.ok) {
+				throw new Error("Сервер не отвечает");
+			}
+			// Получаем users
+			const users = await response.json();
+
+			// Ищем user
+			const user = users.find(u => u.email === email && u.password === password);
+
+
+			if(user) {
+				// Создаём фейковый токен
+				const fakeToken = btoa(`${user.id}-${Date.now()}`);
+				// Сохранение в localStorage
+				localStorage.setItem('token', fakeToken);
+				localStorage.setItem('user', JSON.stringify(user));
+				// Уведомление про успешный вход
+				alert(`Добро пожаловать ${user.username}`);
+
+				// Очистка форм
+				clearForm();
+
+				//Перенаправление 
+				window.location.href = '/' 
+			} else {
+				setError('Неверный email или пароль')
+			}
 		} catch (error) {
 			console.log("Ошибка входа: ", error)
 			setError(error);
@@ -47,7 +80,48 @@ export const Authorization = () => {
 		}
 
 		try {
-			console.log('Зарегистрирован:', '\nНик: ', username,  '\nEmail: ', email, '\nПароль: ', password)
+			// Проверка на существование user при регистрации
+			const usersResponse = await fetch('http://localhost:5000/users');
+			const users = await usersResponse.json();
+
+			const userExistsEmail = users.some(u => u.email === email);
+			const userExistsUsername = users.some(u => u.username === username);
+
+			if(userExistsEmail) {
+				setError('Пользователь с таким email уже существует');
+				return;
+			}
+
+			if (userExistsUsername) {
+				setError('Такой Логин уже существует');
+				return;
+			}
+
+
+			// Если пользователь уникальный создаём пользователя
+			const response = await fetch('http://localhost:5000/users', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					username: username,
+					email: email,
+					password: password
+				})
+			});
+
+			// Новый пользователь
+			const newUser = await response.json()
+			
+			if(response.ok) {
+				alert(`Пользователь ${newUser.username} зарегистрирован`);
+				window.location.href = '/login';
+				console.log(newUser);
+			} else {
+				setError(newUser.message)
+			}
+
 		} catch (error) {
 			console.log("Ошибка регистрации: ", error)
 			setError(error);
