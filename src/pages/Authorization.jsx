@@ -14,7 +14,18 @@ export const Authorization = () => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 
+	const [userData, setUserData] = useState({
+		username: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		errorUsername: '',
+		errorEmail: '',
+		errorPassword: '',
+		errorConfirmPassword: ''
+	})
 
+	// Получаем адресную строку
 	const location = useLocation();
 
 	// Path - Вход
@@ -25,6 +36,72 @@ export const Authorization = () => {
 	const isResetPassword = location.pathname.includes('/password/new');
 
 
+	// Обновленная регистрация
+	const newRegistration = async (e) => {
+		e.preventDefault();
+
+		setUserData({
+			...userData,
+			errorUsername: '',
+			errorEmail: '',
+			errorPassword: '',
+			errorConfirmPassword: ''
+		})
+
+		if(userData.password !== userData.confirmPassword) {
+			setUserData({
+				...userData,
+				errorPassword: 'Пароли не совпадают',
+				errorConfirmPassword: 'Пароли не совпадают'
+			})
+			return;
+		}
+
+		try {
+			const usersResponse = await fetch('https://jsonplaceholder.typicode.com/users');
+			const users = await usersResponse.json();
+
+			const userExistsName = users.some(u => u.username === userData.username);
+			const userExistsEmail = users.some(u => u.email === userData.email);
+
+			if(userExistsName) {
+				setUserData({...userData, errorUsername: 'Пользователь с таким именем уже существует'});
+				return;
+			}
+			if(userExistsEmail) {
+				setUserData({...userData, errorEmail: 'Пользователь с таким email уже существует'});
+				return;
+			}
+
+
+			const response = await fetch('http://localhost:5000/users', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					username: userData.username,
+					email: userData.email,
+					password: userData.password,
+				})
+			})
+
+			const newUser = await response.json();
+
+			if(response.ok) {
+				console.log(`Пользователь ${newUser.username} Зарегистрирован`);
+				window.location.href = '/login';
+				alert('Теперь можете войти в свой аккаунт')
+				console.log('Зарегистрирован: \n', newUser)
+			} else {
+				console.log('Ошибка: ', newUser.message)
+			}
+
+			
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 
 	// Вход
@@ -71,63 +148,64 @@ export const Authorization = () => {
 	}
 
 	// Регистрация
-	const handleRegistration = async (e) => {
-		e.preventDefault();
+	// const handleRegistration = async (e) => {
+	// 	e.preventDefault();
 
-		setError('');
-		if(password !== confirmPassword) {
-			setError('Пароли не совпадают');
-			return;
-		}
+	// 	setError('');
+	// 	if(password !== confirmPassword) {
+	// 		setError('Пароли не совпадают');
+	// 		return;
+	// 	}
 
-		try {
-			// Проверка на существование user при регистрации
-			const usersResponse = await fetch('http://localhost:5000/users');
-			const users = await usersResponse.json();
+	// 	try {
+	// 		// Проверка на существование user при регистрации
+	// 		const usersResponse = await fetch('http://localhost:5000/users');
+	// 		const users = await usersResponse.json();
 
-			const userExistsEmail = users.some(u => u.email === email);
-			const userExistsUsername = users.some(u => u.username === username);
+	// 		const userExistsEmail = users.some(u => u.email === email);
+	// 		const userExistsUsername = users.some(u => u.username === username);
 
-			if(userExistsEmail) {
-				setError('Пользователь с таким email уже существует');
-				return;
-			}
+	// 		if(userExistsEmail) {
+	// 			setError('Пользователь с таким email уже существует');
+	// 			return;
+	// 		}
 
-			if (userExistsUsername) {
-				setError('Такой Логин уже существует');
-				return;
-			}
+	// 		if (userExistsUsername) {
+	// 			setError('Такой Логин уже существует');
+	// 			return;
+	// 		}
 
 
-			// Если пользователь уникальный создаём пользователя
-			const response = await fetch('http://localhost:5000/users', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					username: username,
-					email: email,
-					password: password
-				})
-			});
+	// 		// Если пользователь уникальный создаём пользователя
+	// 		const response = await fetch('http://localhost:5000/users', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				'Content-Type': 'application/json'
+	// 			},
+	// 			body: JSON.stringify({
+	// 				username: username,
+	// 				email: email,
+	// 				password: password
+	// 			})
+	// 		});
 
-			// Новый пользователь
-			const newUser = await response.json()
+	// 		// Новый пользователь
+	// 		const newUser = await response.json()
+
 			
-			if(response.ok) {
-				alert(`Пользователь ${newUser.username} зарегистрирован`);
-				window.location.href = '/login';
-				console.log(newUser);
-			} else {
-				setError(newUser.message)
-			}
+	// 		if(response.ok) {
+	// 			alert(`Пользователь ${newUser.username} зарегистрирован`);
+	// 			window.location.href = '/login';
+	// 			console.log(newUser);
+	// 		} else {
+	// 			setError(newUser.message)
+	// 		}
 
-		} catch (error) {
-			console.log("Ошибка регистрации: ", error)
-			setError(error);
-		}
-	}
+	// 	} catch (error) {
+	// 		console.log("Ошибка регистрации: ", error)
+	// 		setError(error);
+	// 	}
+	// }
 	
 	// Сброс нового пароля
 	const handleResetPassword = async (e) => {
@@ -174,16 +252,19 @@ export const Authorization = () => {
         {/* РЕГИСТРАЦИЯ */}
 				{isRegistration && 
 					<Registration 
-						username={username}
-						setUsername={setUsername}
-						email={email} 
-						setEmail={setEmail}
-						password={password} 
-						setPassword={setPassword}
-						confirmPassword={confirmPassword} 
-						setConfirmPassword={setConfirmPassword}
-						error={error}
-						onSubmit={handleRegistration} 
+						// username={username}
+						// setUsername={setUsername}
+						// email={email} 
+						// setEmail={setEmail}
+						// password={password} 
+						// setPassword={setPassword}
+						// confirmPassword={confirmPassword} 
+						// setConfirmPassword={setConfirmPassword}
+						// error={error}
+						// onSubmit={handleRegistration} 
+						userData={userData}
+						edit={setUserData}
+						onSubmit={newRegistration}
 						clearForm={clearForm}
 						/> }
 

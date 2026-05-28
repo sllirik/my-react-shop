@@ -47,6 +47,24 @@
       "email": "228@user.com",
       "password": "228",
       "id": "80VUPD5nH9Q"
+    },
+    {
+      "username": "Stiv",
+      "email": "smit@users.com",
+      "password": "1234",
+      "id": "MlhKSykGHlM"
+    },
+    {
+      "username": "Carlos",
+      "email": "carlos@users.com",
+      "password": "1234",
+      "id": "N4N5NpsToho"
+    },
+    {
+      "username": "Jimmy",
+      "email": "j.carry@users.com",
+      "password": "fast",
+      "id": "VQoHMByBXXc"
     }
   ],
   "posts": [
