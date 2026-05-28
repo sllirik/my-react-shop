@@ -5,16 +5,11 @@
 	align-items: center;
 	gap: 48px;
 	grid-template-columns: repeat(2, 1fr);
-	border: 1px solid red;
 }
 
-.hero-text {
-	border: 1px solid orange;
-}
 
 
 .hero__image {
-	border: 1px solid orange;
 
 	.hero__img {
 		max-width: 100%;

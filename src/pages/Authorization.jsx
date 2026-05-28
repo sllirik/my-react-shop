@@ -14,6 +14,7 @@ export const Authorization = () => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 
+
 	const location = useLocation();
 
 	// Path - Вход

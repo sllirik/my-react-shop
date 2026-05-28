@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom'
 import { IoLogInOutline, IoLogOut } from 'react-icons/io5'
 import './Navigation.css'
+import { useTheme } from '../context/ThemeContext'
 
 export const Navigation = ({isLogged}) => {
+	const {theme, toggleTheme} = useTheme();
+
   return (
 	<header className="header">
 		<div className="container header__container">
@@ -21,6 +24,7 @@ export const Navigation = ({isLogged}) => {
 					<li className="nav__item">
 						<NavLink className="nav__link" to="/contacts">Контакты</NavLink>
 					</li>
+					
 					{!isLogged 
 					? 	(<li className="nav__item">
 							<NavLink className="nav__link" to="/authorization">
@@ -35,6 +39,8 @@ export const Navigation = ({isLogged}) => {
 							</NavLink>
 						</li>)
 					}
+
+					<button onClick={toggleTheme}>{theme}</button>
 					
 				</ul>
 			</nav>

@@ -14,7 +14,7 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	border-radius: 20px;
-	border: 2px solid #f7f7f4;
+	border: 2px solid var(--clr-text-primary);
 	overflow: hidden;
 	margin: 0 auto;
 }
@@ -45,8 +45,8 @@
 	justify-content: center;
 	flex-direction: column;
 	gap: 20px;
-	color: #151515;
-	background: #f7f7f4;
+	color: var(--clr-body-bg);
+	background: var(--clr-text-primary);
 
 	.form__title {
 		font-size: 26px;

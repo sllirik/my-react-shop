@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navigation } from '../components/Navigation';
-import {Outlet} from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 export const MainLayout = () => {
 	const [isLogged, setIsLogged] = useState(null);

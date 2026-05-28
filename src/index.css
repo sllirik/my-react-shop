@@ -1,4 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+:root {
+	--clr-text-primary: #f7f7f4;
+	--clr-body-bg: #151515;
+}
+
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--clr-text-primary: #151515;
+		--clr-body-bg: #f7f7f4;
+	}
+}
 
 * {
 	padding: 0;
@@ -9,8 +21,8 @@
 
 body {
 	font-family: 'Roboto', sans-serif;
-	color: white;
-	background-color: #151515;
+	color: var(--clr-text-primary);
+	background-color: var(--clr-body-bg);
 }
 
 .container {
